@@ -18,10 +18,7 @@ namespace MovieRating.Test
         [InlineData(1)]
         public void Test1(int reviewer)
         {
-            int i = 0;
-            foreach (var rev in repo.AllReviews) {
-                if (rev.ReviewerId == reviewer) { i++; }
-            }
+            
 
 
         }

@@ -27,10 +27,10 @@ namespace MovieRating.Core
         List<int> GetTopMovies(int n);
         //10. On input N, what are the movies that reviewer N has reviewed? The list should
         //be sorted decreasing by rate first, and date secondly.
-        List<int> GetMoviesReviewedByReviewer(int reviwer);
+        List<int> GetMoviesReviewedByReviewer(int reviewer);
         //11. On input N, what are the reviewers that have reviewed movie N? The list
         //should be sorted decreasing by rate first, and date secondly.
-        List<int> GetReviewerOfMovie(int movie);
+        List<int> GetReviewersOfMovie(int movie);
 
     }
 }
