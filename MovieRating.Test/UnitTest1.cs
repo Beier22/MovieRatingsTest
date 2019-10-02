@@ -1,3 +1,4 @@
+using MovieRating.Infrastructure;
 using System;
 using Xunit;
 
@@ -5,9 +6,23 @@ namespace MovieRating.Test
 {
     public class UnitTest1
     {
+        IRatingRepo repo = new RatingRepo();
+
         [Fact]
-        public void Test1()
+        public void TestReader()
         {
+            int size = repo.AllReviews.Count;
+            Assert.Equal(5009439, size);
+        }
+        [Theory]
+        [InlineData(1)]
+        public void Test1(int reviewer)
+        {
+            int i = 0;
+            foreach (var rev in repo.AllReviews) {
+                if (rev.ReviewerId == reviewer) { i++; }
+            }
+
 
         }
     }
