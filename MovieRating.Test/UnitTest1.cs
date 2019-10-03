@@ -81,19 +81,23 @@ namespace MovieRating.Test
 
 
         //7. What is the id(s) of the movie(s) with the highest number of top rates (5)?
-        [Theory]
-        [InlineData(10, 7)]
-        public void Test7(int input, int expected)
+        [Fact]
+        public void Test7()
         {
-            throw new NotImplementedException();
+            List<int> expected = new List<int> { 4, 14, 18 };
+            List<int> actual = serv.GetMostTopRatedMovies();
+            Assert.Equal(expected, actual);
         }
 
 
         //8. What reviewer(s) had done most reviews?
-        [Theory]
-        [InlineData(10, 7)]
-        public void Test8(int input, int expected)
+        [Fact]
+        public void Test8()
         {
+            List<int> expected = new List<int> { 2, 8, 9, 10 };
+            List<int> actual = serv.GetMostPublishedReviewer();
+            Assert.Equal(expected, actual);
+
         }
 
 
