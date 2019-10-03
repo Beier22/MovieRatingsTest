@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MovieRating.Core\MovieRating.Core.csproj" />
     <ProjectReference Include="..\MovieRating.Infrastructure\MovieRating.Infrastructure.csproj" />
   </ItemGroup>
 

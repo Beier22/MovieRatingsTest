@@ -9,9 +9,9 @@ namespace MovieRating.Infrastructure
     {
         public List<Review> AllReviews { get; }
 
-        public RatingRepo()
+        public RatingRepo(string path)
         {
-            AllReviews = JSONReader.LoadJson();
+            AllReviews = JSONReader.LoadJson(path);
         }
 
 

@@ -9,7 +9,13 @@ namespace MovieRating.Core
 {
     public class MovieRatingService : IMovieRatingService
     {
-        IRatingRepo repo = new RatingRepo();
+        IRatingRepo repo;
+        
+        public MovieRatingService(string path)
+        {
+            repo = new RatingRepo(path);
+        }
+
         public double GetAverageMovieRating(int movie)
         {
             List<Review> reviews = repo.AllReviews.Where(r => r.MovieId == movie).ToList();

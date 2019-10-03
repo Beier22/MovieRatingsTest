@@ -9,9 +9,9 @@ namespace MovieRating.Infrastructure
 {
     public class JSONReader
     {
-        public static List<Review> LoadJson()
+        public static List<Review> LoadJson(string path)
         {
-            using (StreamReader r = new StreamReader("../../../../ratings.json"))
+            using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
                 return JsonConvert.DeserializeObject<List<Review>>(json);
