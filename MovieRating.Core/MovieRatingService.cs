@@ -25,7 +25,8 @@ namespace MovieRating.Core
                 i += review.Grade;
             }
 
-            return i / reviews.Count();
+            double result = i / Convert.ToDouble(reviews.Count());
+            return Math.Round(result, 2);
         }
 
         public double GetAverageReviewerRating(int reviewer)

@@ -40,33 +40,43 @@ namespace MovieRating.Test
 
         //3. On input N and G, how many times has reviewer N given a movie grade G?
         [Theory]
-        [InlineData(10, 7)]
-        public void Test3(int input, int expected)
+        [InlineData(5, 3, 2)]
+        public void Test3(int reviewer, int grade, int expected)
         {
+            List<Review> reviews = serv.GetReviewsFromReviewerWithRating(reviewer, grade);
+            int actual = reviews.Count;
+            Assert.Equal(expected, actual);
         }
 
 
         //4. On input N, how many have reviewed movie N?
         [Theory]
-        [InlineData(10, 7)]
-        public void Test4(int input, int expected)
+        [InlineData(12, 2)]
+        public void Test4(int movie, int expected)
         {
+            List<Review> reviews = serv.GetMovieReviews(movie);
+            int actual = reviews.Count;
+            Assert.Equal(expected, actual);
         }
 
 
         //5. On input N, what is the average rate the movie N had received?
         [Theory]
-        [InlineData(10, 7)]
-        public void Test5(int input, int expected)
+        [InlineData(15, 2.2)]
+        public void Test5(int movie, double expected)
         {
+            double actual = serv.GetAverageMovieRating(movie);
+            Assert.Equal(expected, actual);
         }
 
 
         //6. On input N and G, how many times had movie N received grade G?
         [Theory]
-        [InlineData(10, 7)]
-        public void Test6(int input, int expected)
+        [InlineData(2, 2, 2)]
+        public void Test6(int movie, int grade, int expected)
         {
+            int actual = serv.GetMovieRatingNumber(movie, grade);
+            Assert.Equal(expected, actual);
         }
 
 
@@ -75,6 +85,7 @@ namespace MovieRating.Test
         [InlineData(10, 7)]
         public void Test7(int input, int expected)
         {
+            throw new NotImplementedException();
         }
 
 
