@@ -18,7 +18,7 @@ namespace MovieRating.Core
 
         public double GetAverageMovieRating(int movie)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.MovieId == movie).ToList();
+            List<Review> reviews = repo.AllReviews.Where(r => r.Movie == movie).ToList();
             int i = 0;
 
             foreach (var review in reviews) {
@@ -30,15 +30,15 @@ namespace MovieRating.Core
 
         public double GetAverageReviewerRating(int reviewer)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.ReviewerId == reviewer).ToList();
+            List<Review> reviews = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             int i = 0;
 
             foreach (var review in reviews)
             {
                 i += review.Grade;
             }
-
-            return i / reviews.Count();
+            double result = i / Convert.ToDouble(reviews.Count());
+            return Math.Round(result, 2);
         }
 
         public List<int> GetMostPublishedReviewer()
@@ -55,23 +55,23 @@ namespace MovieRating.Core
 
         public int GetMovieRatingNumber(int movie, int rating)
         {
-            List<Review> reviews1 = repo.AllReviews.Where(r => r.MovieId == movie).ToList();
+            List<Review> reviews1 = repo.AllReviews.Where(r => r.Movie == movie).ToList();
             List<Review> reviews2 = reviews1.Where(r => r.Grade == rating).ToList();
             return reviews2.Count();
         }
 
         public List<Review> GetMovieReviews(int movie)
         {
-            return repo.AllReviews.Where(r => r.MovieId == movie).ToList();
+            return repo.AllReviews.Where(r => r.Movie == movie).ToList();
         }
 
         public List<int> GetMoviesReviewedByReviewer(int reviewer)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.ReviewerId == reviewer).ToList();
+            List<Review> reviews = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             List<int> movies = new List<int>();
             foreach (var r in reviews)
             {
-                movies.Add(r.MovieId);
+                movies.Add(r.Movie);
             }
             return movies;
         }
@@ -84,12 +84,12 @@ namespace MovieRating.Core
 
         public List<Review> GetReviewsFromReviewer(int reviewer)
         {
-            return repo.AllReviews.Where(r => r.ReviewerId == reviewer).ToList();
+            return repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
         }
 
         public List<Review> GetReviewsFromReviewerWithRating(int reviewer, int rating)
         {
-            List<Review> reviews1 = repo.AllReviews.Where(r => r.ReviewerId == reviewer).ToList();
+            List<Review> reviews1 = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             return reviews1.Where(r => r.Grade == rating).ToList();
         }
 
