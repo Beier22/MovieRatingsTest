@@ -44,7 +44,11 @@ namespace MovieRating.Core
 
         public List<int> GetMostPublishedReviewer()
         {
-            throw new NotImplementedException();
+            var reviews = repo.AllReviews.GroupBy(x => x.Reviewer).OrderByDescending(g => g.Count()).ToList();
+            Review r = (Review)reviews[0];
+            List<int> t = new List<int>();
+            t.Add(r.Reviewer);
+            return t;
         }
 
         public List<int> GetMostTopRatedMovies()
