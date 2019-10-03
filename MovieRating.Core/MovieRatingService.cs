@@ -46,16 +46,15 @@ namespace MovieRating.Core
         {
             var reviews = repo.AllReviews.GroupBy(x => x.Reviewer).OrderByDescending(g => g.Count()).ToList();
             Review r = (Review)reviews[0];
-            List<int> t = new List<int>();
-            t.Add(r.Reviewer);
-            return t;
+            return new List<int>() { r.Reviewer };
         }
 
         public List<int> GetMostTopRatedMovies()
         {
             List<Review> reviews1 = repo.AllReviews.Where(r => r.Grade == 5).ToList();
-            int movie;
-            throw new NotImplementedException();
+            var reviews2 = reviews1.GroupBy(x => x.Movie).OrderByDescending(g => g.Count()).ToList();
+            Review f = (Review)reviews2[0];
+            return new List<int>() { f.Movie };
         }
 
         public int GetMovieRatingNumber(int movie, int rating)
