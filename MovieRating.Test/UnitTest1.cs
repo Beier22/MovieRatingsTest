@@ -3,22 +3,23 @@ using MovieRating.Core.Entity;
 using MovieRating.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace MovieRating.Test
 {
     public class UnitTest1
     {
-        IRatingRepo repo = new RatingRepo("../../../../samples.json");
+        
         IMovieRatingService serv = new MovieRatingService("../../../../samples.json");
 
         [Fact]
         public void TestReader()
         {
-            int size = repo.AllReviews.Count;
+            int size = serv.Repo.AllReviews.Count;
             Assert.Equal(50, size);
         }
-
+        
         //1. On input N, what are the number of reviews from reviewer N?
         [Theory]
         [InlineData(10, 7)]
@@ -63,6 +64,10 @@ namespace MovieRating.Test
         //5. On input N, what is the average rate the movie N had received?
         [Theory]
         [InlineData(15, 2.2)]
+        [InlineData(12, 4)]
+        [InlineData(18, 4)]
+        [InlineData(14, 4)]
+        [InlineData(16, 4)]
         public void Test5(int movie, double expected)
         {
             double actual = serv.GetAverageMovieRating(movie);
@@ -103,9 +108,11 @@ namespace MovieRating.Test
 
         //9. On input N, what is top N of movies? The score of a movie is its average rate.
         [Theory]
-        [InlineData(10, 7)]
-        public void Test9(int input, int expected)
+        [InlineData(3, new int[]{ 14, 16, 12 })]
+        public void Test9(int input, int[] expected)
         {
+
+            Assert.Equal(serv.GetTopMovies(input).OrderBy(x => x), new List<int>(expected).OrderBy(x => x));
         }
 
 
@@ -125,6 +132,6 @@ namespace MovieRating.Test
         public void Test11(int input, int expected)
         {
         }
-
+        
     }
 }

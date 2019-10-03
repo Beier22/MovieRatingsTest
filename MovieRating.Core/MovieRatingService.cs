@@ -9,16 +9,16 @@ namespace MovieRating.Core
 {
     public class MovieRatingService : IMovieRatingService
     {
-        IRatingRepo repo;
+        public IRatingRepo Repo { get; }
         
         public MovieRatingService(string path)
         {
-            repo = new RatingRepo(path);
+            Repo = new RatingRepo(path);
         }
 
         public double GetAverageMovieRating(int movie)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.Movie == movie).ToList();
+            List<Review> reviews = Repo.AllReviews.Where(r => r.Movie == movie).ToList();
             int i = 0;
 
             foreach (var review in reviews) {
@@ -31,7 +31,7 @@ namespace MovieRating.Core
 
         public double GetAverageReviewerRating(int reviewer)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
+            List<Review> reviews = Repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             int i = 0;
 
             foreach (var review in reviews)
@@ -44,34 +44,62 @@ namespace MovieRating.Core
 
         public List<int> GetMostPublishedReviewer()
         {
-            var reviews = repo.AllReviews.GroupBy(x => x.Reviewer).OrderByDescending(g => g.Count()).ToList();
-            Review r = (Review)reviews[0];
-            return new List<int>() { r.Reviewer };
+            List<int> l = new List<int>();
+            foreach (var review in Repo.AllReviews) {
+                if (l.Count == 0)
+                {
+                    l.Add(review.Reviewer);
+                }
+                else if (GetReviewsFromReviewer(l[0]).Count < GetReviewsFromReviewer(review.Reviewer).Count)
+                {
+                    l.Clear();
+                    l.Add(review.Reviewer);
+                }
+                else if (GetReviewsFromReviewer(l[0]).Count == GetReviewsFromReviewer(review.Reviewer).Count && !l.Contains(review.Reviewer)) {
+                    l.Add(review.Reviewer);
+                }
+            }
+                l = l.OrderBy(x => x).ToList();
+                return l;
         }
 
         public List<int> GetMostTopRatedMovies()
         {
-            List<Review> reviews1 = repo.AllReviews.Where(r => r.Grade == 5).ToList();
-            var reviews2 = reviews1.GroupBy(x => x.Movie).OrderByDescending(g => g.Count()).ToList();
-            Review f = (Review)reviews2[0];
-            return new List<int>() { f.Movie };
+            List<int> l = new List<int>();
+            foreach (var review in Repo.AllReviews) {
+                if (l.Count == 0)
+                {
+                    l.Add(review.Movie);
+                }
+                else if (GetMovieRatingNumber(l[0], 5) < GetMovieRatingNumber(review.Movie, 5))
+                {
+                    l.Clear();
+                    l.Add(review.Movie);
+                }
+                else if (GetMovieRatingNumber(l[0], 5) == GetMovieRatingNumber(review.Movie, 5)&&!l.Contains(review.Movie)){
+                    l.Add(review.Movie);
+                }
+            }
+            l = l.OrderBy(x => x).ToList();
+            return l;
+           
         }
 
         public int GetMovieRatingNumber(int movie, int rating)
         {
-            List<Review> reviews1 = repo.AllReviews.Where(r => r.Movie == movie).ToList();
+            List<Review> reviews1 = Repo.AllReviews.Where(r => r.Movie == movie).ToList();
             List<Review> reviews2 = reviews1.Where(r => r.Grade == rating).ToList();
             return reviews2.Count();
         }
 
         public List<Review> GetMovieReviews(int movie)
         {
-            return repo.AllReviews.Where(r => r.Movie == movie).ToList();
+            return Repo.AllReviews.Where(r => r.Movie == movie).ToList();
         }
 
         public List<int> GetMoviesReviewedByReviewer(int reviewer)
         {
-            List<Review> reviews = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
+            List<Review> reviews = Repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             List<int> movies = new List<int>();
             foreach (var r in reviews)
             {
@@ -88,18 +116,31 @@ namespace MovieRating.Core
 
         public List<Review> GetReviewsFromReviewer(int reviewer)
         {
-            return repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
+            return Repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
         }
 
         public List<Review> GetReviewsFromReviewerWithRating(int reviewer, int rating)
         {
-            List<Review> reviews1 = repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
+            List<Review> reviews1 = Repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
             return reviews1.Where(r => r.Grade == rating).ToList();
         }
 
         public List<int> GetTopMovies(int n)
         {
-            throw new NotImplementedException();
+            Dictionary<int, double> dict = new Dictionary<int, double>();
+            foreach(var review in Repo.AllReviews)
+            {
+                double rating = GetAverageMovieRating(review.Movie);
+                try
+                {
+                    dict.Add(review.Movie, rating);
+                }
+                catch (ArgumentException) { }
+            }
+            dict = dict.OrderByDescending(x => x.Value).Take(n).ToDictionary(d => d.Key, m => m.Value);
+            return new List<int>(dict.Keys);
+            
+        }
         }
     }
-}
+

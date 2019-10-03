@@ -1,4 +1,5 @@
 ﻿using MovieRating.Core.Entity;
+using MovieRating.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,7 @@ namespace MovieRating.Core
 {
     public interface IMovieRatingService
     {
+        IRatingRepo Repo { get; }
         //1. On input N, what are the number of reviews from reviewer N?
         List<Review> GetReviewsFromReviewer(int reviewer);
         //2. On input N, what is the average rate that reviewer N had given?
