@@ -100,6 +100,7 @@ namespace MovieRating.Core
         public List<int> GetMoviesReviewedByReviewer(int reviewer)
         {
             List<Review> reviews = Repo.AllReviews.Where(r => r.Reviewer == reviewer).ToList();
+            reviews = reviews.OrderByDescending(x => x.Grade).ThenByDescending(y => y.Date).ToList();
             List<int> movies = new List<int>();
             foreach (var r in reviews)
             {
@@ -110,8 +111,15 @@ namespace MovieRating.Core
 
         public List<int> GetReviewersOfMovie(int movie)
         {
+            List<Review> reviews = Repo.AllReviews.Where(r => r.Movie == movie).ToList();
+            reviews = reviews.OrderByDescending(x => x.Grade).ThenByDescending(y => y.Date).ToList();
+            List<int> reviewers = new List<int>();
+            foreach (var r in reviews)
+            {
+                reviewers.Add(r.Reviewer);
+            }
+            return reviewers;
 
-            throw new NotImplementedException();
         }
 
         public List<Review> GetReviewsFromReviewer(int reviewer)

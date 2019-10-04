@@ -10,7 +10,7 @@ namespace MovieRating.Test
 {
     public class UnitTest1
     {
-        
+
         IMovieRatingService serv = new MovieRatingService("../../../../samples.json");
 
         [Fact]
@@ -19,7 +19,7 @@ namespace MovieRating.Test
             int size = serv.Repo.AllReviews.Count;
             Assert.Equal(50, size);
         }
-        
+
         //1. On input N, what are the number of reviews from reviewer N?
         [Theory]
         [InlineData(10, 7)]
@@ -108,10 +108,9 @@ namespace MovieRating.Test
 
         //9. On input N, what is top N of movies? The score of a movie is its average rate.
         [Theory]
-        [InlineData(3, new int[]{ 14, 16, 12 })]
+        [InlineData(3, new int[] { 14, 16, 12 })]
         public void Test9(int input, int[] expected)
         {
-
             Assert.Equal(serv.GetTopMovies(input).OrderBy(x => x), new List<int>(expected).OrderBy(x => x));
         }
 
@@ -119,18 +118,20 @@ namespace MovieRating.Test
         //10. On input N, what are the movies that reviewer N has reviewed? The list should
         //be sorted decreasing by rate first, and date secondly.
         [Theory]
-        [InlineData(10, 7)]
-        public void Test10(int input, int expected)
+        [InlineData(6, new int[] { 15, 19, 7 })]
+        public void Test10(int input, int[] expected)
         {
+            Assert.Equal(new List<int>(expected), serv.GetMoviesReviewedByReviewer(input));
         }
 
 
         //11. On input N, what are the reviewers that have reviewed movie N? The list
         //should be sorted decreasing by rate first, and date secondly.
         [Theory]
-        [InlineData(10, 7)]
-        public void Test11(int input, int expected)
+        [InlineData(8, new int[]{9,5,10})]
+        public void Test11(int input, int[] expected)
         {
+            Assert.Equal(new List<int>(expected), serv.GetReviewersOfMovie(input));
         }
         
     }
