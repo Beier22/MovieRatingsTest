@@ -16,6 +16,10 @@ namespace MovieRating.Core
             Repo = new RatingRepo(path);
         }
 
+        public int amountOfReviews() {
+            return Repo.AllReviews.Count();
+        }
+
         public double GetAverageMovieRating(int movie)
         {
             List<Review> reviews = Repo.AllReviews.Where(r => r.Movie == movie).ToList();

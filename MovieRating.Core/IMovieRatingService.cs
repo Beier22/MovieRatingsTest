@@ -8,6 +8,7 @@ namespace MovieRating.Core
 {
     public interface IMovieRatingService
     {
+        int amountOfReviews();
         IRatingRepo Repo { get; }
         //1. On input N, what are the number of reviews from reviewer N?
         List<Review> GetReviewsFromReviewer(int reviewer);
