@@ -106,7 +106,7 @@ namespace MovieRating.Test
             checkPerformance();
             List<int> actual = serv.GetMostPublishedReviewer();
             stopwatch.Stop();
-            Assert.True(4 >= stopwatch.Elapsed.TotalSeconds);
+           Assert.True(4 >= stopwatch.Elapsed.TotalSeconds);
         }
 
         /*

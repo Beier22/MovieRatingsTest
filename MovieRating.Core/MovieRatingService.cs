@@ -58,25 +58,20 @@ namespace MovieRating.Core
 
         public List<int> GetMostPublishedReviewer()
         {
-            List<int> l = new List<int>();
+            Dictionary<int, int> reviewsOfReviewer = new Dictionary<int, int>();
             foreach (var review in Repo.AllReviews)
             {
-                if (l.Count == 0)
-                {
-                    l.Add(review.Reviewer);
-                }
-                else if (GetReviewsFromReviewer(l[0]).Count < GetReviewsFromReviewer(review.Reviewer).Count)
-                {
-                    l.Clear();
-                    l.Add(review.Reviewer);
-                }
-                else if (GetReviewsFromReviewer(l[0]).Count == GetReviewsFromReviewer(review.Reviewer).Count && !l.Contains(review.Reviewer))
-                {
-                    l.Add(review.Reviewer);
+                if (!reviewsOfReviewer.ContainsKey(review.Reviewer)) {
+                    reviewsOfReviewer.Add(review.Reviewer, GetMoviesReviewedByReviewer(review.Reviewer).Count);
                 }
             }
-            l = l.OrderBy(x => x).ToList();
-            return l;
+           reviewsOfReviewer = reviewsOfReviewer.OrderByDescending(x => x.Value).Where(m => m.Value == reviewsOfReviewer.First().Value).ToDictionary(k => k.Key, v => v.Value);
+            List<int> r = new List<int>();
+           foreach(var review in reviewsOfReviewer)
+            {
+                r.Add(review.Key);
+            }
+            return r.OrderBy(x => x).ToList();
         }
 
         public List<int> GetMostTopRatedMovies()
